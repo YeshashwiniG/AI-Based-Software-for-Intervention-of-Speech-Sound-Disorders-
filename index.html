@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhonoAcoustic AI</title>
+  <meta name="description" content="Compare expected English speech with word-level acoustic pronunciation support predictions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+            <line x1="8" y1="22" x2="16" y2="22"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>PhonoAcoustic <span class="highlight">AI</span></h1>
+          <p class="tagline">Expected-word pronunciation support</p>
+        </div>
+      </div>
+
+      <nav class="nav-tabs" role="tablist">
+        <button class="nav-tab active" id="tab-btn-analyzer" data-tab="tab-analyzer" role="tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h3l3-9 6 18 3-9h3"/></svg>
+          Continuous Speech Analyzer
+        </button>
+        <button class="nav-tab" id="tab-btn-datasets" data-tab="tab-datasets" role="tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          Dataset & Evaluation
+        </button>
+        <button class="nav-tab" id="tab-btn-targets" data-tab="tab-targets" role="tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Target Sound Inventory
+        </button>
+      </nav>
+
+      <div class="header-status">
+        <span class="status-dot"></span>
+        <span class="status-label">Word analysis ready</span>
+      </div>
+    </header>
+
+    <!-- Main Content Body -->
+    <main class="main-content">
+
+      <!-- ================= TAB 1: ANALYZER ================= -->
+      <section id="tab-analyzer" class="tab-pane active" role="tabpanel">
+        
+        <!-- Clinical Goal & Philosophy Banner -->
+        <div class="clinical-doctrine-banner">
+          <div class="doctrine-icon">💡</div>
+          <div class="doctrine-content">
+            <h4>Practice sentence → sound analysis</h4>
+            <p>Choose a sentence provided by the app, record the complete sentence, and review possible sound targets. This prototype does not diagnose a disorder.</p>
+          </div>
+        </div>
+
+        <div class="analyzer-grid">
+          <!-- Left Column: Audio Recording & Input Controls -->
+          <div class="panel card input-panel">
+            <div class="panel-header">
+              <h3><span class="step-num">1</span> Continuous Speech Input</h3>
+              <span class="badge">English speech</span>
+            </div>
+
+            <!-- Input Modes (Record / Upload) -->
+            <div class="input-actions-container">
+              <!-- Live Record -->
+              <div class="recording-box" id="recording-box">
+                <div class="mic-visualizer" id="mic-visualizer">
+                  <div class="pulse-ring"></div>
+                  <button id="btn-toggle-record" class="btn-record" aria-label="Toggle Microphone Recording">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="mic-icon">
+                      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                      <line x1="12" y1="19" x2="12" y2="22"/>
+                      <line x1="8" y1="22" x2="16" y2="22"/>
+                    </svg>
+                  </button>
+                </div>
+                <div class="record-meta">
+                  <span id="record-status-text">Click microphone to record continuous speech</span>
+                  <span id="record-timer" class="record-timer">00:00</span>
+                </div>
+              </div>
+
+              <div class="divider-text"><span>OR</span></div>
+
+              <!-- Upload Audio File -->
+              <div class="upload-box">
+                <input type="file" id="audio-file-input" accept="audio/*" class="file-input-hidden">
+                <button id="btn-browse-file" class="btn-secondary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Upload WAV / Audio File
+                </button>
+                <span id="file-chosen-name" class="file-name-label">No file selected</span>
+              </div>
+
+              <label class="expected-text-label" for="sentence-select">Practice sentence</label>
+              <select id="sentence-select" class="expected-text-input" aria-label="Choose an English practice sentence"></select>
+              <p id="sentence-prompt" class="helper-text" aria-live="polite">Loading practice sentences…</p>
+              <p class="helper-text">Speak the complete sentence. Word timing is approximate; phone timestamps are not provided by the training dataset.</p>
+            </div>
+
+            <!-- Analyze Action Button -->
+            <div class="action-footer">
+              <button id="btn-run-analysis" class="btn-primary" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 3l14 9-14 9V3z"/></svg>
+                Analyze Speech
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Column: recognized speech -->
+      <div class="panel card results-panel">
+            <div class="panel-header">
+              <h3><span class="step-num">2</span> Word-Level Analysis</h3>
+              <div id="processing-badge" class="badge subtle">Ready for Input</div>
+            </div>
+
+            <!-- Audio Waveform Player -->
+            <div class="waveform-container" id="waveform-container">
+              <div class="waveform-header">
+                <span>Audio waveform</span>
+                <span id="audio-duration-display" class="duration-label">0.00s</span>
+              </div>
+              <canvas id="waveform-canvas" width="600" height="90"></canvas>
+              <div class="audio-controls-bar">
+                <button id="btn-play-audio" class="btn-mini" disabled>
+                  <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  <span>Play Utterance</span>
+                </button>
+                <audio id="playback-audio" style="display:none;"></audio>
+                <span id="playback-time-label" class="time-label">00:00 / 00:00</span>
+              </div>
+            </div>
+
+            <!-- Speech recognition status -->
+            <div id="diagnostic-summary-box" class="diagnostic-summary-box empty-state">
+              <div class="summary-status-icon" id="summary-icon">🔍</div>
+              <div class="summary-text-group">
+                <h4 id="summary-title">Ready for a sentence</h4>
+                <p id="summary-description">Choose the sentence, then record or upload the complete utterance.</p>
+              </div>
+            </div>
+
+            <!-- Flagged Difficulties Section -->
+            <div class="flagged-difficulties-section" id="flagged-section" style="display:none;">
+              <div class="section-title">
+                <h4>Possible pronunciation issues</h4>
+                <span id="flagged-count-badge" class="count-badge warning">0 Detected</span>
+              </div>
+              <div id="flagged-list" class="flagged-list">
+                <!-- Dynamically populated cards -->
+              </div>
+            </div>
+
+            <!-- Word-by-Word Timeline & Phoneme Breakdown -->
+            <div class="word-breakdown-section" id="word-breakdown-section" style="display:none;">
+              <div class="section-title">
+                <h4>Word and sound analysis</h4>
+                <span class="sub-info">Approximate start–end times</span>
+              </div>
+              <p id="recognized-transcript" class="recognized-transcript"></p>
+              <div id="words-timeline-chips" class="words-timeline-chips">
+                <!-- Recognized words are added here in order. -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 2: DATASETS ================= -->
+      <section id="tab-datasets" class="tab-pane" role="tabpanel">
+        <div class="tab-header-box">
+          <h2>Dataset used for training</h2>
+          <p>Speechocean762 is a non-native English pronunciation assessment corpus. The word-level acoustic model uses the supplied word accuracy ratings as a non-clinical training target.</p>
+        </div>
+
+        <div id="datasets-cards-grid" class="datasets-cards-grid">
+          <!-- Dynamically populated from /api/datasets -->
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 3: TARGET SOUND INVENTORY ================= -->
+      <section id="tab-targets" class="tab-pane" role="tabpanel">
+        <div class="tab-header-box">
+          <h2>Annotated phone counts</h2>
+      <p>These are corpus annotation counts. They do not imply that the application localizes a specific phone.</p>
+        </div>
+
+        <div id="targets-cards-grid" class="targets-cards-grid">
+          <!-- Populated from /api/target-sounds -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Word-level pronunciation support · Speechocean762 annotation proxy · Not a medical diagnosis</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
